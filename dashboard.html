@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doce Confeitaria | Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --primary: #ff758c;
+      --primary-light: rgba(255, 117, 140, 0.1);
+      --primary-gradient: linear-gradient(135deg, #ff758c, #ff7eb3);
+      --text-main: #2c3e50;
+      --text-light: #6c757d;
+      --bg-gradient: linear-gradient(135deg, #ffdde1, #ee9ca7, #a6c1ee);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --sidebar-width: 250px;
+      --sidebar-width-collapsed: 70px;
+      --transition: all 0.3s ease;
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --border-radius: 15px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .dashboard.collapsed {
+      grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 2rem 1rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.5);
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      overflow-y: auto;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.5rem;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .logo-text {
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .sidebar-toggle {
+      cursor: pointer;
+      background: var(--primary-light);
+      border: none;
+      color: var(--primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .sidebar-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-main);
+      text-decoration: none;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .nav-icon {
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .nav-text {
+      transition: var(--transition);
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 1.5rem;
+      transition: var(--transition);
+      max-width: 100vw;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mobile-toggle {
+      display: none;
+      cursor: pointer;
+      background: var(--primary-light);
+      border: none;
+      color: var(--primary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .user-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      width: 200px;
+      padding: 1rem 0;
+      z-index: 100;
+      margin-top: 0.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: var(--transition);
+    }
+
+    .user-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .menu-item {
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .menu-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.1);
+      margin: 0.5rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-header i {
+      font-size: 1.5rem;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 12px;
+      border-radius: 50%;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-comparison {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #28a745;
+      font-weight: 500;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      background: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      border-radius: 8px;
+      overflow: hidden;
+      width: 150px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .dropdown-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(5px);
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .dropdown-item:hover {
+      background: var(--primary-light);
+    }
+
+    .order-item {
+      padding: 1rem;
+      background: rgba(255,255,255,0.5);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .order-item:hover {
+      background: rgba(255,255,255,0.8);
+      transform: translateX(5px);
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 117, 140, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(255, 117, 140, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    .settings-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .settings-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .settings-content {
+      background: white;
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .settings-modal.active .settings-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--primary);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .settings-section {
+      margin-bottom: 2rem;
+    }
+
+    .settings-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .settings-title {
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .theme-option {
+      height: 50px;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .theme-option.active {
+      border-color: var(--primary);
+    }
+
+    .theme-option::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      opacity: 0;
+    }
+
+    .theme-option.active::after {
+      opacity: 1;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .theme-pink {
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7, #a6c1ee);
+    }
+    
+    .theme-blue {
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+    
+    .theme-green {
+      background: linear-gradient(135deg, #96e6a1, #d4fc79);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width) !important; /* Força a largura fixa */
+    z-index: 1001;
+    box-shadow: var(--shadow-lg);
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.mobile-active {
+    left: 0;
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-toggle {
+    display: none !important;
+  }
+  
+  /* Corrige o problema de dashboard colapsado em mobile */
+  .dashboard.collapsed {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Ajusta a largura do sidebar mesmo quando colapsado em mobile */
+  .dashboard.collapsed .sidebar {
+    width: var(--sidebar-width) !important;
+  }
+  
+  /* Garante que o backdrop cubra toda a tela */
+  .modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Ajusta o menu do usuário para mobile */
+  .user-menu {
+    width: 90%;
+    max-width: 250px;
+    right: -20px;
+  }
+}
+
+    @media (min-width: 769px) {
+  .sidebar-toggle {
+    display: flex !important;
+  }
+  
+  .mobile-toggle {
+    display: none !important;
+  }
+  
+  /* Garante que as colunas de grid funcionem corretamente */
+  .dashboard {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
+  
+  .dashboard.collapsed {
+    grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+  }
+  
+  /* Garante que o sidebar esteja sempre visível em telas grandes */
+  .sidebar {
+    position: sticky;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transition: width 0.3s ease;
+  }
+}
+
+    @media (max-width: 576px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-title {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .user-profile {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    /* Collapsed sidebar styles */
+    .dashboard.collapsed .sidebar {
+      width: var(--sidebar-width-collapsed);
+    }
+
+    .dashboard.collapsed .logo-text,
+    .dashboard.collapsed .nav-text {
+      display: none;
+    }
+
+    .dashboard.collapsed .nav-item {
+      justify-content: center;
+      padding: 1rem 0;
+    }
+
+    .dashboard.collapsed .logo {
+      justify-content: center;
+    }
+
+    .nav-item, .menu-item, .dropdown-item, .order-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Melhor feedback visual para elementos interativos */
+.btn, .sidebar-toggle, .mobile-toggle, .avatar {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover, .sidebar-toggle:hover, .mobile-toggle:hover, .avatar:hover {
+  transform: translateY(-2px);
+}
+
+/* Melhoria para o dropdown */
+.dropdown-menu {
+  z-index: 1100; /* Garante que fique acima de outros elementos */
+}
+
+
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Estilos adicionais para o dashboard */
+
+/* Notificações */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 9999;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+/* Efeitos de hover para elementos adicionais */
+.order-item {
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.order-item:hover {
+  border-left-color: var(--primary);
+}
+
+/* Animações para elementos */
+.stat-card, .chart-card {
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.chart-card:nth-child(1) { animation-delay: 0.4s; }
+.chart-card:nth-child(2) { animation-delay: 0.5s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Melhorias no modo responsivo */
+@media (max-width: 768px) {
+  .settings-content {
+    width: 95%;
+  }
+  
+  .user-menu {
+    right: -50px;
+  }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary), #ff7eb3);
+}
+
+/* Cores de destaque para valores positivos e negativos */
+.positive {
+  color: #28a745 !important;
+}
+
+.negative {
+  color: #dc3545 !important;
+}
+
+/* Animação para o botão de logout */
+.menu-item:last-child {
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item:last-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(220, 53, 69, 0.1);
+  transition: all 0.3s ease;
+}
+
+.menu-item:last-child:hover::before {
+  left: 0;
+}
+
+.menu-item:last-child:hover {
+  color: #dc3545;
+}
+
+/* Tooltip personalizado */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem;
+  background: var(--text-main);
+  color: white;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 5px);
+}
+  </style>
+</head>
+<body>
+  <!-- Backdrop for mobile menu -->
+  <div class="modal-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-birthday-cake"></i>
+          <span class="logo-text">Confeitaria</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-chevron-left" id="toggleIcon"></i>
+        </button>
+      </div>
+      <nav>
+        <a href="#" class="nav-item active">
+          <i class="fas fa-home nav-icon"></i>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-shopping-cart nav-icon"></i>
+          <span class="nav-text">Pedidos</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-book nav-icon"></i>
+          <span class="nav-text">Receitas</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-users nav-icon"></i>
+          <span class="nav-text">Clientes</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-box nav-icon"></i>
+          <span class="nav-text">Estoque</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-chart-bar nav-icon"></i>
+          <span class="nav-text">Relatórios</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-calendar nav-icon"></i>
+          <span class="nav-text">Calendário</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="dashboard-header">
+        <div class="header-title">
+          <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1>Dashboard</h1>
+        </div>
+        <div class="user-profile">
+          <button class="btn btn-outline" id="settingsBtn">
+            <i class="fas fa-cog"></i>
+            <span>Configurações</span>
+          </button>
+          <div class="avatar" id="avatarBtn">MS</div>
+          <div class="user-menu" id="userMenu">
+            <a href="#" class="menu-item">
+              <i class="fas fa-user"></i>
+              <span>Meu Perfil</span>
+            </a>
+            <a href="#" class="menu-item">
+              <i class="fas fa-bell"></i>
+              <span>Notificações</span>
+            </a>
+            <div class="divider"></div>
+            <a href="#" class="menu-item">
+              <i class="fas fa-question-circle"></i>
+              <span>Ajuda</span>
+            </a>
+            <a href="#" class="menu-item">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Sair</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <h3>Pedidos do Mês</h3>
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+          <div class="stat-value">48</div>
+          <div class="stat-comparison">
+            <i class="fas fa-arrow-up"></i>
+            <span>12% em relação ao mês anterior</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <h3>Receita Mensal</h3>
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="stat-value">R$ 4.850</div>
+          <div class="stat-comparison">
+            <i class="fas fa-arrow-up"></i>
+            <span>8% em relação ao mês anterior</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <h3>Novos Clientes</h3>
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="stat-value">15</div>
+          <div class="stat-comparison">
+            <i class="fas fa-arrow-up"></i>
+            <span>5 em relação ao mês anterior</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Pedidos por Categoria</h3>
+            <div class="dropdown">
+              <button class="dropdown-toggle" id="chartFilter">
+                <span>Este Mês</span>
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu" id="chartFilterMenu">
+                <div class="dropdown-item">Este Mês</div>
+                <div class="dropdown-item">Último Mês</div>
+                <div class="dropdown-item">Este Ano</div>
+              </div>
+            </div>
+          </div>
+          <div style="height: 300px; background: rgba(255,255,255,0.5); border-radius: 10px; margin-top: 1rem; display: flex; align-items: center; justify-content: center;">
+            <span style="color: var(--text-light)">Gráfico de Pedidos</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Próximos Pedidos</h3>
+            <button class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              <span>Novo</span>
+            </button>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div class="order-item">
+              <strong>Bolo de Chocolate</strong>
+              <p>Entrega: Hoje, 15:00</p>
+              <small style="color: var(--primary);">Cliente: Ana Paula</small>
+            </div>
+            <div class="order-item">
+              <strong>Cupcakes (24un)</strong>
+              <p>Entrega: Amanhã, 10:00</p>
+              <small style="color: var(--primary);">Cliente: João Silva</small>
+            </div>
+            <div class="order-item">
+              <strong>Torta Doce de Limão</strong>
+              <p>Entrega: Amanhã, 16:30</p>
+              <small style="color: var(--primary);">Cliente: Marcos Oliveira</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+      <div class="modal-header">
+        <h2>Configurações</h2>
+        <button class="modal-close" id="closeSettingsBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3 class="settings-title">Tema</h3>
+          <div class="theme-options">
+            <div class="theme-option theme-pink active" data-theme="pink"></div>
+            <div class="theme-option theme-blue" data-theme="blue"></div>
+            <div class="theme-option theme-green" data-theme="green"></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3 class="settings-title">Preferências</h3>
+          <div class="setting-item">
+            <span>Modo escuro</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span>Notificações</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span>Sons do sistema</span>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelSettingsBtn">Cancelar</button>
+        <button class="btn btn-primary">Salvar alterações</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+const dashboard = document.getElementById('dashboard');
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+const mobileToggle = document.getElementById('mobileToggle');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+const avatarBtn = document.getElementById('avatarBtn');
+const userMenu = document.getElementById('userMenu');
+const chartFilter = document.getElementById('chartFilter');
+const chartFilterMenu = document.getElementById('chartFilterMenu');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const cancelSettingsBtn = document.getElementById('cancelSettingsBtn');
+const themeOptions = document.querySelectorAll('.theme-option');
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+// Toggle sidebar collapse (apenas para telas grandes)
+function toggleSidebar() {
+  if (window.innerWidth > 768) {
+    dashboard.classList.toggle('collapsed');
+    toggleIcon.classList.toggle('fa-chevron-left');
+    toggleIcon.classList.toggle('fa-chevron-right');
+  }
+}
+
+// Mobile sidebar toggle
+function openMobileSidebar() {
+  sidebar.classList.add('mobile-active');
+  sidebarBackdrop.classList.add('active');
+}
+
+// Função para fechar o menu no mobile
+function closeMobileSidebar() {
+  sidebar.classList.remove('mobile-active');
+  sidebarBackdrop.classList.remove('active');
+}
+
+// Evento para o botão de toggle (PC)
+sidebarToggle.addEventListener('click', toggleSidebar);
+
+// Evento para o botão hamburguer (Mobile)
+mobileToggle.addEventListener('click', openMobileSidebar);
+
+// Evento para fechar a sidebar no mobile ao clicar fora
+sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+
+// Ajustar comportamento ao redimensionar a tela
+window.addEventListener('resize', handleResize);
+
+// Função para lidar com o redimensionamento
+function handleResize() {
+  if (window.innerWidth <= 768) {
+    // Em telas pequenas, garantir que o dashboard não fique no modo collapsed
+    // e que o menu mobile esteja pronto para uso
+    dashboard.classList.remove('collapsed');
+    
+    // Esconde o botão de toggle em telas pequenas
+    if (sidebarToggle) {
+      sidebarToggle.style.display = 'none';
+    }
+    
+    // Mostra o botão de hambúrguer em telas pequenas
+    if (mobileToggle) {
+      mobileToggle.style.display = 'flex';
+    }
+  } else {
+    // Em telas grandes, remover o modo mobile-active
+    sidebar.classList.remove('mobile-active');
+    sidebarBackdrop.classList.remove('active');
+    
+    // Exibe o botão de toggle em telas grandes
+    if (sidebarToggle) {
+      sidebarToggle.style.display = 'flex';
+    }
+    
+    // Esconde o botão de hambúrguer em telas grandes
+    if (mobileToggle) {
+      mobileToggle.style.display = 'none';
+    }
+  }
+}
+
+// Executar handleResize na inicialização para configurar corretamente os elementos
+document.addEventListener('DOMContentLoaded', handleResize);
+
+// Toggle chart filter dropdown
+chartFilter.addEventListener('click', () => {
+  chartFilterMenu.classList.toggle('active');
+});
+
+// Toggle user menu
+avatarBtn.addEventListener('click', () => {
+  userMenu.classList.toggle('active');
+});
+
+// Settings modal
+settingsBtn.addEventListener('click', () => {
+  settingsModal.classList.add('active');
+});
+
+closeSettingsBtn.addEventListener('click', () => {
+  settingsModal.classList.remove('active');
+});
+
+cancelSettingsBtn.addEventListener('click', () => {
+  settingsModal.classList.remove('active');
+});
+
+// Theme switching
+themeOptions.forEach(option => {
+  option.addEventListener('click', () => {
+    // Remove active class from all options
+    themeOptions.forEach(opt => opt.classList.remove('active'));
+    
+    // Add active to clicked option
+    option.classList.add('active');
+    
+    // Apply theme
+    const theme = option.getAttribute('data-theme');
+    applyTheme(theme);
+  });
+});
+
+// Theme application function
+function applyTheme(theme) {
+  const root = document.documentElement;
+  
+  const themes = {
+    pink: {
+      primary: "#ff758c", 
+      primaryLight: "rgba(255, 117, 140, 0.1)", 
+      primaryGradient: "linear-gradient(135deg, #ff758c, #ff7eb3)", 
+      bgGradient: "linear-gradient(135deg, #ffdde1, #ee9ca7, #a6c1ee)"
+    },
+    blue: {
+      primary: "#3498db", 
+      primaryLight: "rgba(52, 152, 219, 0.1)", 
+      primaryGradient: "linear-gradient(135deg, #3498db, #6dd5ed)", 
+      bgGradient: "linear-gradient(135deg, #a1c4fd, #c2e9fb)"
+    },
+    green: {
+      primary: "#27ae60", 
+      primaryLight: "rgba(39, 174, 96, 0.1)",  
+      primaryGradient: "linear-gradient(135deg, #27ae60, #58d68d)",  
+      bgGradient: "linear-gradient(135deg, #b8e994, #6ab04c)"
+    }
+  };
+
+  if (themes[theme]) {
+    root.style.setProperty('--primary', themes[theme].primary);
+    root.style.setProperty('--primary-light', themes[theme].primaryLight);
+    root.style.setProperty('--primary-gradient', themes[theme].primaryGradient);
+    root.style.setProperty('--bg-gradient', themes[theme].bgGradient);
+  }
+}
+
+// Dark mode toggle
+darkModeToggle.addEventListener('change', () => {
+  if (darkModeToggle.checked) {
+    document.body.classList.add('dark-mode');
+    applyDarkMode(true);
+  } else {
+    document.body.classList.remove('dark-mode');
+    applyDarkMode(false);
+  }
+});
+
+// Dark mode application
+function applyDarkMode(isDark) {
+  const root = document.documentElement;
+  
+  if (isDark) {
+    root.style.setProperty('--text-main', '#e1e1e1');
+    root.style.setProperty('--text-light', '#a9a9a9');
+    root.style.setProperty('--card-bg', 'rgba(33, 33, 33, 0.85)');
+  } else {
+    root.style.setProperty('--text-main', '#2c3e50');
+    root.style.setProperty('--text-light', '#6c757d');
+    root.style.setProperty('--card-bg', 'rgba(255, 255, 255, 0.85)');
+  }
+}
+
+// Close dropdowns when clicking anywhere else
+document.addEventListener('click', (event) => {
+  // Fechar menu de usuário quando clicar fora
+  if (!avatarBtn.contains(event.target) && !userMenu.contains(event.target)) {
+    userMenu.classList.remove('active');
+  }
+  
+  // Fechar outros dropdowns quando clicar fora
+  const dropdowns = document.querySelectorAll('.dropdown-menu');
+  dropdowns.forEach(dropdown => {
+    const dropdownBtn = dropdown.previousElementSibling;
+    if (!dropdown.contains(event.target) && !dropdownBtn.contains(event.target)) {
+      dropdown.classList.remove('active');
+    }
+  });
+});
+
+// Handle dropdown items
+const dropdownItems = document.querySelectorAll('.dropdown-item');
+dropdownItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    const dropdown = e.target.closest('.dropdown');
+    const dropdownToggle = dropdown.querySelector('.dropdown-toggle span');
+    dropdownToggle.textContent = e.target.textContent;
+    dropdown.querySelector('.dropdown-menu').classList.remove('active');
+  });
+});
+
+// Add CSS class to support dark mode
+const darkModeCSS = document.createElement('style');
+darkModeCSS.innerHTML = `
+  body.dark-mode {
+    background: linear-gradient(135deg, #20202c, #273444);
+  }
+  
+  body.dark-mode .sidebar {
+    background: rgba(33, 33, 33, 0.9);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  body.dark-mode .chart-card,
+  body.dark-mode .stat-card,
+  body.dark-mode .user-menu,
+  body.dark-mode .dropdown-menu,
+  body.dark-mode .settings-content {
+    background: rgba(33, 33, 33, 0.85);
+    color: #e1e1e1;
+  }
+  
+  body.dark-mode .order-item,
+  body.dark-mode .chart-card div[style*="background"] {
+    background: rgba(45, 45, 45, 0.5) !important;
+    color: #e1e1e1;
+  }
+  
+  body.dark-mode .divider {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  body.dark-mode .dropdown-toggle {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  body.dark-mode .stat-comparison {
+    color: #00d26a;
+  }
+`;
+document.head.appendChild(darkModeCSS);
+
+// Adicionar regras de estilo responsivas adicionais
+const responsiveCSS = document.createElement('style');
+responsiveCSS.innerHTML = `
+  @media (max-width: 768px) {
+    .sidebar-toggle {
+      display: none !important;
+    }
+    
+    .mobile-toggle {
+      display: flex !important;
+    }
+    
+    .dashboard {
+      grid-template-columns: 1fr !important;
+    }
+    
+    .sidebar {
+      position: fixed;
+      left: -100%;
+      width: var(--sidebar-width);
+      z-index: 1001;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .sidebar.mobile-active {
+      left: 0;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .sidebar-toggle {
+      display: flex !important;
+    }
+    
+    .mobile-toggle {
+      display: none !important;
+    }
+  }
+`;
+document.head.appendChild(responsiveCSS);
+
+// Create global notification function
+window.showNotification = function(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+      <span>${message}</span>
+    </div>
+    <button class="notification-close"><i class="fas fa-times"></i></button>
+  `;
+  
+  // Adicionar estilos para notificação
+  notification.style.position = 'fixed';
+  notification.style.bottom = '20px';
+  notification.style.right = '20px';
+  notification.style.padding = '1rem';
+  notification.style.borderRadius = '10px';
+  notification.style.display = 'flex';
+  notification.style.alignItems = 'center';
+  notification.style.justifyContent = 'space-between';
+  notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+  notification.style.transform = 'translateY(100px)';
+  notification.style.opacity = '0';
+  notification.style.transition = 'all 0.3s ease';
+  notification.style.zIndex = '9999';
+  
+  if (type === 'success') {
+    notification.style.background = 'linear-gradient(135deg, #43c6ac, #28a745)';
+    notification.style.color = 'white';
+  } else if (type === 'error') {
+    notification.style.background = 'linear-gradient(135deg, #ff758c, #ff7eb3)';
+    notification.style.color = 'white';
+  } else {
+    notification.style.background = 'linear-gradient(135deg, #2193b0, #6dd5ed)';
+    notification.style.color = 'white';
+  }
+  
+  document.body.appendChild(notification);
+  
+  // Adicionar evento de fechar
+  notification.querySelector('.notification-close').addEventListener('click', () => {
+    notification.style.transform = 'translateY(100px)';
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  });
+  
+  // Mostrar notificação
+  setTimeout(() => {
+    notification.style.transform = 'translateY(0)';
+    notification.style.opacity = '1';
+  }, 10);
+  
+  // Auto-fechar após 5 segundos
+  setTimeout(() => {
+    notification.style.transform = 'translateY(100px)';
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 5000);
+};
+
+// Simular uma carga de dados
+setTimeout(() => {
+  showNotification('Dashboard carregado com sucesso!', 'success');
+}, 1000);
+
+// Implementar recurso de saída
+document.querySelector('.menu-item:last-child').addEventListener('click', (e) => {
+  e.preventDefault();
+  
+  // Confirmar saída
+  const confirmLogout = confirm('Tem certeza que deseja sair?');
+  if (confirmLogout) {
+    showNotification('Saindo do sistema...', 'info');
+    
+    // Simulando logout
+    setTimeout(() => {
+      window.location.href = '#';
+    }, 2000);
+  }
+});
+
+// Inicializa a configuração responsiva correta
+handleResize();
+  </script>
+</body>
+</html>
+    
+    
