@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Casamento - Controle Financeiro</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #8e44ad;
+            --primary-light: #a55ebd;
+            --primary-dark: #6c3483;
+            --secondary: #3498db;
+            --secondary-light: #5dade2;
+            --secondary-dark: #2874a6;
+            --accent: #f39c12;
+            --accent-light: #f8c471;
+            --light-bg: #f9f9f9;
+            --lighter-gray: #f5f5f5;
+            --light-gray: #ecf0f1;
+            --medium-gray: #bdc3c7;
+            --dark-gray: #7f8c8d;
+            --darker-gray: #34495e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --white: #ffffff;
+            --black: #2c3e50;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--black);
+            min-height: 100vh;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            line-height: 1;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+        
+        .btn-accent:hover {
+            background-color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--darker-gray);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.2);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+        }
+        
+        /* Header e navegação */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--darker-gray);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 6px 0;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover:after, .nav-links a.active:after {
+            width: 100%;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 20px;
+            z-index: 99;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            transform: translateY(0);
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+            color: var(--darker-gray);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .mobile-menu a.active {
+            color: var(--primary);
+        }
+        
+        /* Página de Login */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+            padding: 20px;
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: var(--radius-md);
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .login-card .logo {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            justify-content: center;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            font-size: 18px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .login-footer {
+            margin-top: 24px;
+            text-align: center;
+            color: var(--dark-gray);
+            font-size: 15px;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+        }
+        
+        .login-decoration:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .login-decoration:nth-child(2) {
+            bottom: 10%;
+            right: 20%;
+            width: 250px;
+            height: 250px;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            padding: 30px 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .dashboard-title {
+            font-size: 28px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border-top: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .summary-card h3 {
+            font-size: 16px;
+            color: var(--dark-gray);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .summary-card .amount {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+        
+        .summary-card .subtitle {
+            font-size: 15px;
+            color: var(--dark-gray);
+            margin-bottom: 16px;
+        }
+        
+        .budget-card {
+            border-top-color: var(--primary);
+        }
+        
+        .spent-card {
+            border-top-color: var(--warning);
+        }
+        
+        .remaining-card {
+            border-top-color: var(--success);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .progress-good {
+            background: linear-gradient(to right, var(--success), #27ae60);
+        }
+        
+        .progress-warning {
+            background: linear-gradient(to right, var(--warning), #e67e22);
+        }
+        
+        .progress-danger {
+            background: linear-gradient(to right, var(--danger), #c0392b);
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-card {
+            min-height: 350px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-placeholder {
+            background-color: var(--light-gray);
+            height: 280px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        .recent-expenses {
+            margin-bottom: 30px;
+        }
+        
+        .expense-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .expense-title {
+            font-size: 18px;
+            color: var(--primary-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .expense-header a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .expense-table-container {
+            overflow-x: auto;
+        }
+        
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+        
+        .expense-table th, .expense-table td {
+            padding: 14px 15px;
+            text-align: left;
+        }
+        
+        .expense-table th {
+            background-color: var(--light-gray);
+            font-weight: 600;
+            color: var(--darker-gray);
+            position: sticky;
+            top: 0;
+        }
+        
+        .expense-table tr {
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+        
+        .expense-table tr:hover {
+            background-color: var(--lighter-gray);
+        }
+        
+        .expense-table tr:last-child {
+            border-bottom: none;
+        }
+        
+        .expense-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .category-wedding {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .category-home {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .category-furniture {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        /* Formulário de Despesas */
+        .expense-form {
+            max-width: 800px;
+            margin: 30px auto;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        /* Lista de Compras */
+        .shopping-list {
+            margin: 30px 0;
+        }
+        
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .list-title {
+            font-size: 28px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .list-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+        
+        .list-item:hover {
+            background-color: var(--lighter-gray);
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-check {
+            margin-right: 16px;
+            width: 22px;
+            height: 22px;
+            accent-color: var(--primary);
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--darker-gray);
+            font-size: 17px;
+        }
+        
+        .item-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--dark-gray);
+            flex-wrap: wrap;
+        }
+        
+        .item-price {
+            font-weight: 700;
+            min-width: 120px;
+            text-align: right;
+            color: var(--primary-dark);
+            font-size: 18px;
+        }
+        
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            gap: 4px;
+        }
+        
+        .priority-high {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .priority-medium {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .priority-low {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        /* Galeria de Fotos */
+        .gallery {
+            padding: 30px 0;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .gallery-img-container {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            padding: 16px;
+        }
+        
+        .gallery-date {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .gallery-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--darker-gray);
+            margin-bottom: 8px;
+        }
+        
+        .gallery-description {
+            font-size: 14px;
+            color: var(--dark-gray);
+            line-height: 1.5;
+        }
+        
+        .upload-container {
+            max-width: 800px;
+            margin: 30px auto;
+        }
+        
+        .drag-area {
+            border: 2px dashed var(--primary-light);
+            border-radius: var(--radius-md);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            transition: var(--transition);
+            background-color: rgba(142, 68, 173, 0.05);
+        }
+        
+        .drag-area:hover {
+            background-color: rgba(142, 68, 173, 0.1);
+        }
+        
+        .drag-area .icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        
+        .drag-area h4 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--darker-gray);
+            margin-bottom: 8px;
+        }
+        
+        .drag-area p {
+            color: var(--dark-gray);
+            margin-bottom: 16px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .browse-btn {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        
+        .browse-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .user-info span {
+                display: none;
+            }
+            
+            .dashboard-header, .list-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .dashboard-actions, .list-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .expense-table th, .expense-table td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 16px;
+            }
+            
+            .login-card {
+                padding: 24px;
+            }
+            
+            .item-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .dashboard-title, .list-title {
+                font-size: 24px;
+            }
+            
+            .expense-category {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TELA DE LOGIN -->
+    <div class="login-container" id="login-screen">
+        <div class="login-decoration"></div>
+        <div class="login-decoration"></div>
+        
+        <div class="card login-card">
+            <a href="#" class="logo">
+                <i class="fas fa-heart logo-icon"></i>
+                Nosso<span>Casamento</span>
+            </a>
+            <h2 class="login-title">Controle Financeiro</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-with-icon">
+                        <input type="email" id="email" placeholder="Seu e-mail" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="password" placeholder="Sua senha" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary login-btn" onclick="showScreen('dashboard-screen')">
+                    <i class="fas fa-sign-in-alt btn-icon"></i>
+                    Entrar
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DO DASHBOARD -->
+    <div id="dashboard-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" class="active" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" class="active" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Dashboard de Planejamento</h1>
+                    
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus btn-icon"></i>
+                            Nova Despesa
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-file-export btn-icon"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="summary-cards">
+                    <div class="card summary-card budget-card">
+                        <h3><i class="fas fa-coins"></i> Orçamento Total</h3>
+                        <div class="amount">R$ 50.000</div>
+                        <div class="subtitle">Definido em 15/01/2025</div>
+                    </div>
+                    
+                    <div class="card summary-card spent-card">
+                        <h3><i class="fas fa-credit-card"></i> Valor Gasto</h3>
+                        <div class="amount">R$ 23.450</div>
+                        <div class="subtitle">46.9% do orçamento total</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-warning" style="width: 46.9%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card remaining-card">
+                        <h3><i class="fas fa-wallet"></i> Valor Restante</h3>
+                        <div class="amount">R$ 26.550</div>
+                        <div class="subtitle">53.1% do orçamento total</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-good" style="width: 53.1%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="card chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title"><i class="fas fa-chart-pie"></i> Gastos por Categoria</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Gráfico de gastos por categoria
+                        </div>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title"><i class="fas fa-chart-line"></i> Gastos ao Longo do Tempo</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Gráfico de gastos ao longo do tempo
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card recent-expenses">
+                    <div class="expense-header">
+                        <h3 class="expense-title"><i class="fas fa-receipt"></i> Despesas Recentes</h3>
+                        <a href="#" onclick="showScreen('expense-screen')">Ver Todas <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15/03/2025</td>
+                                    <td>Reserva do Buffet</td>
+                                    <td><span class="expense-category category-wedding">Buffet</span></td>
+                                    <td>R$ 15.000</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>10/03/2025</td>
+                                    <td>Convites (50 unidades)</td>
+                                    <td><span class="expense-category category-wedding">Convites</span></td>
+                                    <td>R$ 1.250</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>28/02/2025</td>
+                                    <td>Decoração - Sinal</td>
+                                    <td><span class="expense-category category-wedding">Decoração</span></td>
+                                    <td>R$ 3.500</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>20/02/2025</td>
+                                    <td>Vestido de Noiva - Entrada</td>
+                                    <td><span class="expense-category category-wedding">Vestuário</span></td>
+                                    <td>R$ 2.500</td>
+                                    <td><i class="fas fa-clock" style="color: #f39c12;"></i> Pendente</td>
+                                </tr>
+                                <tr>
+                                    <td>15/02/2025</td>
+                                    <td>Fotógrafo - Sinal</td>
+                                    <td><span class="expense-category category-wedding">Fotografia</span></td>
+                                    <td>R$ 1.200</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE DESPESAS -->
+    <div id="expense-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" class="active" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" class="active" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="expense-form card">
+                <h2 class="login-title">Adicionar Nova Despesa</h2>
+                
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-description">Descrição</label>
+                            <input type="text" id="expense-description" placeholder="Ex: Buffet, Fotógrafo, etc">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-amount">Valor (R$)</label>
+                            <div class="input-with-icon">
+                                <input type="number" id="expense-amount" placeholder="0,00" step="0.01">
+                                <i class="fas fa-dollar-sign input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-category">Categoria</label>
+                            <select id="expense-category">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="buffet">Buffet</option>
+                                <option value="decoração">Decoração</option>
+                                <option value="vestuário">Vestuário</option>
+                                <option value="música">Música</option>
+                                <option value="fotografia">Fotografia</option>
+                                <option value="convites">Convites</option>
+                                <option value="cerimonia">Cerimônia</option>
+                                <option value="alianças">Alianças</option>
+                                <option value="lua-de-mel">Lua de Mel</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-date">Data</label>
+                            <input type="date" id="expense-date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-status">Status</label>
+                            <select id="expense-status">
+                                <option value="paid">Pago</option>
+                                <option value="pending">Pendente</option>
+                                <option value="scheduled">Agendado</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-payment">Forma de Pagamento</label>
+                            <select id="expense-payment">
+                                <option value="">Selecione</option>
+                                <option value="credit">Cartão de Crédito</option>
+                                <option value="debit">Cartão de Débito</option>
+                                <option value="money">Dinheiro</option>
+                                <option value="transfer">Transferência</option>
+                                <option value="pix">PIX</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expense-notes">Observações</label>
+                        <textarea id="expense-notes" rows="3" placeholder="Detalhes adicionais sobre esta despesa..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="showScreen('dashboard-screen')">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Salvar Despesa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE LISTA DE COMPRAS -->
+    <div id="shopping-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" class="active" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" class="active" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="shopping-list">
+            <div class="container">
+                <div class="list-header">
+                    <h1 class="list-title">Lista de Compras</h1>
+                    
+                    <div class="list-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus btn-icon"></i>
+                            Novo Item
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter btn-icon"></i>
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Lembrancinha para Padrinhos</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Lembranças</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 20/05/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-high">Alta Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 1.200</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Materiais para Convites DIY</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Convites</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 10/04/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-medium">Média Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 450</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check" checked>
+                        <div class="item-details">
+                            <div class="item-name">Sapatos para o Noivo</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Vestuário</span>
+                                <span><i class="fas fa-calendar"></i> Comprado em: 28/02/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-high">Alta Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 350</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Decoração para Carro dos Noivos</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Decoração</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 15/06/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-low">Baixa Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 200</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check" checked>
+                        <div class="item-details">
+                            <div class="item-name">Kit de Maquiagem para Noiva</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Beleza</span>
+                                <span><i class="fas fa-calendar"></i> Comprado em: 05/03/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-medium">Média Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 580</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE GALERIA -->
+    <div id="gallery-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" class="active" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" class="active" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="gallery">
+            <div class="container">
+                <div class="list-header">
+                    <h1 class="list-title">Nossa Galeria de Inspirações</h1>
+                    
+                    <div class="list-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-upload btn-icon"></i>
+                            Adicionar Fotos
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-th-large btn-icon"></i>
+                            Categorias
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 10/02/2025
+                            </div>
+                            <h4 class="gallery-title">Decoração Floral</h4>
+                            <p class="gallery-description">Inspiração para decoração com flores brancas e rosas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 15/02/2025
+                            </div>
+                            <h4 class="gallery-title">Mesa de Doces</h4>
+                            <p class="gallery-description">Ideias para organização da mesa de doces e bolos.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 20/02/2025
+                            </div>
+                            <h4 class="gallery-title">Modelo de Convite</h4>
+                            <p class="gallery-description">Design de convite para casamento com acabamento em relevo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 01/03/2025
+                            </div>
+                            <h4 class="gallery-title">Arranjos de Mesa</h4>
+                            <p class="gallery-description">Arranjos de mesa com velas e elementos naturais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showScreen(screenId) {
+            // Oculta todas as telas
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard-screen').style.display = 'none';
+            document.getElementById('expense-screen').style.display = 'none';
+            document.getElementById('shopping-screen').style.display = 'none';
+            document.getElementById('gallery-screen').style.display = 'none';
+            
+            // Exibe a tela solicitada
+            document.getElementById(screenId).style.display = 'block';
+        }
+        
+        function toggleMobileMenu() {
+          console.log("Menu hambúrguer acionado");
+          const mobileMenu = document.getElementById('mobile-menu');
+          mobileMenu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
