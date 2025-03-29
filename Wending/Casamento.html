@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Casamento - Controle Financeiro</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Poppins -->
+    <link rel="stylesheet" href="casamento.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- TELA DE LOGIN -->
+    <div class="login-container" id="login-screen">
+        <div class="login-decoration"></div>
+        <div class="login-decoration"></div>
+        
+        <div class="card login-card">
+            <a href="#" class="logo">
+                <i class="fas fa-heart logo-icon"></i>
+                Nosso<span>Casamento</span>
+            </a>
+            <h2 class="login-title">Controle Financeiro</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-with-icon">
+                        <input type="email" id="email" placeholder="Seu e-mail" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="password" placeholder="Sua senha" required>
+                        <i class="fas fa-lock input-icon"></i>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary login-btn" onclick="showScreen('dashboard-screen')">
+                    <i class="fas fa-sign-in-alt btn-icon"></i>
+                    Entrar
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DO DASHBOARD -->
+    <div id="dashboard-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" class="active" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" class="active" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Dashboard de Planejamento</h1>
+                    
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus btn-icon"></i>
+                            Nova Despesa
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-file-export btn-icon"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="summary-cards">
+                    <div class="card summary-card budget-card">
+                        <h3><i class="fas fa-coins"></i> Orçamento Total</h3>
+                        <div class="amount">R$ 50.000</div>
+                        <div class="subtitle">Definido em 15/01/2025</div>
+                    </div>
+                    
+                    <div class="card summary-card spent-card">
+                        <h3><i class="fas fa-credit-card"></i> Valor Gasto</h3>
+                        <div class="amount">R$ 23.450</div>
+                        <div class="subtitle">46.9% do orçamento total</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-warning" style="width: 46.9%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card remaining-card">
+                        <h3><i class="fas fa-wallet"></i> Valor Restante</h3>
+                        <div class="amount">R$ 26.550</div>
+                        <div class="subtitle">53.1% do orçamento total</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-good" style="width: 53.1%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="card chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title"><i class="fas fa-chart-pie"></i> Gastos por Categoria</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Gráfico de gastos por categoria
+                        </div>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title"><i class="fas fa-chart-line"></i> Gastos ao Longo do Tempo</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Gráfico de gastos ao longo do tempo
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card recent-expenses">
+                    <div class="expense-header">
+                        <h3 class="expense-title"><i class="fas fa-receipt"></i> Despesas Recentes</h3>
+                        <a href="#" onclick="showScreen('expense-screen')">Ver Todas <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15/03/2025</td>
+                                    <td>Reserva do Buffet</td>
+                                    <td><span class="expense-category category-wedding">Buffet</span></td>
+                                    <td>R$ 15.000</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>10/03/2025</td>
+                                    <td>Convites (50 unidades)</td>
+                                    <td><span class="expense-category category-wedding">Convites</span></td>
+                                    <td>R$ 1.250</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>28/02/2025</td>
+                                    <td>Decoração - Sinal</td>
+                                    <td><span class="expense-category category-wedding">Decoração</span></td>
+                                    <td>R$ 3.500</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                                <tr>
+                                    <td>20/02/2025</td>
+                                    <td>Vestido de Noiva - Entrada</td>
+                                    <td><span class="expense-category category-wedding">Vestuário</span></td>
+                                    <td>R$ 2.500</td>
+                                    <td><i class="fas fa-clock" style="color: #f39c12;"></i> Pendente</td>
+                                </tr>
+                                <tr>
+                                    <td>15/02/2025</td>
+                                    <td>Fotógrafo - Sinal</td>
+                                    <td><span class="expense-category category-wedding">Fotografia</span></td>
+                                    <td>R$ 1.200</td>
+                                    <td><i class="fas fa-check-circle" style="color: #2ecc71;"></i> Pago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE DESPESAS -->
+    <div id="expense-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" class="active" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" class="active" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="expense-form card">
+                <h2 class="login-title">Adicionar Nova Despesa</h2>
+                
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-description">Descrição</label>
+                            <input type="text" id="expense-description" placeholder="Ex: Buffet, Fotógrafo, etc">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-amount">Valor (R$)</label>
+                            <div class="input-with-icon">
+                                <input type="number" id="expense-amount" placeholder="0,00" step="0.01">
+                                <i class="fas fa-dollar-sign input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-category">Categoria</label>
+                            <select id="expense-category">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="buffet">Buffet</option>
+                                <option value="decoração">Decoração</option>
+                                <option value="vestuário">Vestuário</option>
+                                <option value="música">Música</option>
+                                <option value="fotografia">Fotografia</option>
+                                <option value="convites">Convites</option>
+                                <option value="cerimonia">Cerimônia</option>
+                                <option value="alianças">Alianças</option>
+                                <option value="lua-de-mel">Lua de Mel</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-date">Data</label>
+                            <input type="date" id="expense-date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-status">Status</label>
+                            <select id="expense-status">
+                                <option value="paid">Pago</option>
+                                <option value="pending">Pendente</option>
+                                <option value="scheduled">Agendado</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expense-payment">Forma de Pagamento</label>
+                            <select id="expense-payment">
+                                <option value="">Selecione</option>
+                                <option value="credit">Cartão de Crédito</option>
+                                <option value="debit">Cartão de Débito</option>
+                                <option value="money">Dinheiro</option>
+                                <option value="transfer">Transferência</option>
+                                <option value="pix">PIX</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expense-notes">Observações</label>
+                        <textarea id="expense-notes" rows="3" placeholder="Detalhes adicionais sobre esta despesa..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="showScreen('dashboard-screen')">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Salvar Despesa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE LISTA DE COMPRAS -->
+    <div id="shopping-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" class="active" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" class="active" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="shopping-list">
+            <div class="container">
+                <div class="list-header">
+                    <h1 class="list-title">Lista de Compras</h1>
+                    
+                    <div class="list-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus btn-icon"></i>
+                            Novo Item
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter btn-icon"></i>
+                            Filtrar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Lembrancinha para Padrinhos</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Lembranças</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 20/05/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-high">Alta Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 1.200</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Materiais para Convites DIY</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Convites</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 10/04/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-medium">Média Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 450</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check" checked>
+                        <div class="item-details">
+                            <div class="item-name">Sapatos para o Noivo</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Vestuário</span>
+                                <span><i class="fas fa-calendar"></i> Comprado em: 28/02/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-high">Alta Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 350</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check">
+                        <div class="item-details">
+                            <div class="item-name">Decoração para Carro dos Noivos</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Decoração</span>
+                                <span><i class="fas fa-calendar"></i> Comprar até: 15/06/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-low">Baixa Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 200</div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <input type="checkbox" class="item-check" checked>
+                        <div class="item-details">
+                            <div class="item-name">Kit de Maquiagem para Noiva</div>
+                            <div class="item-meta">
+                                <span><i class="fas fa-tag"></i> Beleza</span>
+                                <span><i class="fas fa-calendar"></i> Comprado em: 05/03/2025</span>
+                                <span><i class="fas fa-star"></i> <span class="priority-badge priority-medium">Média Prioridade</span></span>
+                            </div>
+                        </div>
+                        <div class="item-price">R$ 580</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TELA DE GALERIA -->
+    <div id="gallery-screen" style="display: none;">
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">
+                        <i class="fas fa-heart logo-icon"></i>
+                        Nosso<span>Casamento</span>
+                    </a>
+                    
+                    <div class="nav-links">
+                        <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                        <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                        <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                        <a href="#" class="active" onclick="showScreen('gallery-screen')">Galeria</a>
+                        <a href="#">Relatórios</a>
+                    </div>
+                    
+                    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="user-info">
+                        <div class="user-avatar">MC</div>
+                        <span>Maria & Carlos</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="showScreen('dashboard-screen')">Dashboard</a>
+                <a href="#" onclick="showScreen('expense-screen')">Despesas</a>
+                <a href="#" onclick="showScreen('shopping-screen')">Lista de Compras</a>
+                <a href="#" class="active" onclick="showScreen('gallery-screen')">Galeria</a>
+                <a href="#">Relatórios</a>
+            </div>
+        </header>
+        
+        <div class="gallery">
+            <div class="container">
+                <div class="list-header">
+                    <h1 class="list-title">Nossa Galeria de Inspirações</h1>
+                    
+                    <div class="list-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-upload btn-icon"></i>
+                            Adicionar Fotos
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-th-large btn-icon"></i>
+                            Categorias
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 10/02/2025
+                            </div>
+                            <h4 class="gallery-title">Decoração Floral</h4>
+                            <p class="gallery-description">Inspiração para decoração com flores brancas e rosas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 15/02/2025
+                            </div>
+                            <h4 class="gallery-title">Mesa de Doces</h4>
+                            <p class="gallery-description">Ideias para organização da mesa de doces e bolos.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 20/02/2025
+                            </div>
+                            <h4 class="gallery-title">Modelo de Convite</h4>
+                            <p class="gallery-description">Design de convite para casamento com acabamento em relevo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-img-container">
+                            <img src="https://via.placeholder.com/400x300" alt="Foto de inspiração" class="gallery-img">
+                        </div>
+                        <div class="gallery-caption">
+                            <div class="gallery-date">
+                                <i class="fas fa-calendar"></i> 01/03/2025
+                            </div>
+                            <h4 class="gallery-title">Arranjos de Mesa</h4>
+                            <p class="gallery-description">Arranjos de mesa com velas e elementos naturais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showScreen(screenId) {
+            // Oculta todas as telas
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard-screen').style.display = 'none';
+            document.getElementById('expense-screen').style.display = 'none';
+            document.getElementById('shopping-screen').style.display = 'none';
+            document.getElementById('gallery-screen').style.display = 'none';
+            
+            // Exibe a tela solicitada
+            document.getElementById(screenId).style.display = 'block';
+        }
+        
+        function toggleMobileMenu() {
+          console.log("Menu hambúrguer acionado");
+          const mobileMenu = document.getElementById('mobile-menu');
+          mobileMenu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

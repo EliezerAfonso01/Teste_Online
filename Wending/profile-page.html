@@ -1,0 +1,284 @@
+<!-- Página de Perfil dos Usuários -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Planejamento de Casamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="casamento.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-ring logo-icon"></i>
+                    Casa<span>Mente</span>
+                </a>
+                <div class="nav-links">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="expenses.html">Despesas</a>
+                    <a href="shopping-list.html">Lista de Compras</a>
+                    <a href="gallery.html">Galeria</a>
+                    <a href="reports.html">Relatórios</a>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">AS</div>
+                    <span>Ana Silva</span>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        <div class="mobile-menu">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="expenses.html">Despesas</a>
+            <a href="shopping-list.html">Lista de Compras</a>
+            <a href="gallery.html">Galeria</a>
+            <a href="reports.html">Relatórios</a>
+            <a href="profile.html" class="active">Perfil</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Perfil do Casal</h1>
+            </div>
+            
+            <div class="profile-cards">
+                <!-- Perfil Principal -->
+                <div class="card">
+                    <div class="profile-header">
+                        <h2 class="profile-title">
+                            <i class="fas fa-user-circle"></i> Informações do Casal
+                        </h2>
+                    </div>
+                    <div class="profile-content">
+                        <div class="profile-avatars">
+                            <div class="profile-avatar-container">
+                                <div class="profile-avatar">
+                                    <span>AS</span>
+                                </div>
+                                <h3>Ana Silva</h3>
+                            </div>
+                            <div class="profile-avatar-divider">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="profile-avatar-container">
+                                <div class="profile-avatar">
+                                    <span>RP</span>
+                                </div>
+                                <h3>Rafael Pereira</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <div class="info-group">
+                                <span class="info-label">Data do Casamento:</span>
+                                <span class="info-value">05/06/2025</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Local:</span>
+                                <span class="info-value">Sítio Flor de Liz - São Paulo, SP</span>
+                            </div>
+                            <div class="info-group">
+                                <span class="info-label">Número de Convidados:</span>
+                                <span class="info-value">150</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="btn btn-primary" id="editProfileBtn">
+                                <i class="fas fa-edit btn-icon"></i> Editar Informações
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Orçamento -->
+                <div class="card">
+                    <div class="profile-header">
+                        <h2 class="profile-title">
+                            <i class="fas fa-wallet"></i> Gerenciamento de Orçamento
+                        </h2>
+                    </div>
+                    <div class="profile-content">
+                        <form id="budgetForm">
+                            <div class="form-group">
+                                <label for="totalBudget">Orçamento Total (R$)</label>
+                                <div class="input-with-icon">
+                                    <input type="number" id="totalBudget" name="totalBudget" step="100" min="0" value="30000">
+                                    <span class="input-icon">R$</span>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-categories">
+                                <h3>Orçamento por Categoria</h3>
+                                <div class="budget-category-item">
+                                    <div class="category-header">
+                                        <span>Decoração</span>
+                                        <span>20%</span>
+                                    </div>
+                                    <input type="range" class="category-slider" min="0" max="100" value="20" data-category="decoration">
+                                    <div class="category-amount">R$ 6.000,00</div>
+                                </div>
+                                
+                                <div class="budget-category-item">
+                                    <div class="category-header">
+                                        <span>Buffet</span>
+                                        <span>30%</span>
+                                    </div>
+                                    <input type="range" class="category-slider" min="0" max="100" value="30" data-category="food">
+                                    <div class="category-amount">R$ 9.000,00</div>
+                                </div>
+                                
+                                <div class="budget-category-item">
+                                    <div class="category-header">
+                                        <span>Local</span>
+                                        <span>40%</span>
+                                    </div>
+                                    <input type="range" class="category-slider" min="0" max="100" value="40" data-category="venue">
+                                    <div class="category-amount">R$ 12.000,00</div>
+                                </div>
+                                
+                                <div class="budget-category-item">
+                                    <div class="category-header">
+                                        <span>Outros</span>
+                                        <span>10%</span>
+                                    </div>
+                                    <input type="range" class="category-slider" min="0" max="100" value="10" data-category="others">
+                                    <div class="category-amount">R$ 3.000,00</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save btn-icon"></i> Salvar Orçamento
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Adicionar Fundos -->
+                <div class="card">
+                    <div class="profile-header">
+                        <h2 class="profile-title">
+                            <i class="fas fa-money-bill-wave"></i> Adicionar Fundos
+                        </h2>
+                    </div>
+                    <div class="profile-content">
+                        <div class="summary-stats">
+                            <div class="summary-stat">
+                                <span class="stat-label">Fundos Disponíveis:</span>
+                                <span class="stat-value">R$ 17.500,00</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="stat-label">Gastado até agora:</span>
+                                <span class="stat-value">R$ 12.500,00</span>
+                            </div>
+                            <div class="summary-stat">
+                                <span class="stat-label">Orçamento Restante:</span>
+                                <span class="stat-value">R$ 5.000,00</span>
+                            </div>
+                        </div>
+                        
+                        <form id="addFundsForm">
+                            <div class="form-group">
+                                <label for="fundAmount">Valor a Adicionar (R$)</label>
+                                <div class="input-with-icon">
+                                    <input type="number" id="fundAmount" name="fundAmount" step="100" min="0" placeholder="0.00">
+                                    <span class="input-icon">R$</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fundSource">Fonte</label>
+                                <select id="fundSource" name="fundSource">
+                                    <option value="personal">Economias Pessoais</option>
+                                    <option value="parents">Ajuda dos Pais</option>
+                                    <option value="gift">Presente</option>
+                                    <option value="loan">Empréstimo</option>
+                                    <option value="other">Outra</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fundDate">Data</label>
+                                <input type="date" id="fundDate" name="fundDate">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fundNotes">Observações</label>
+                                <textarea id="fundNotes" name="fundNotes" rows="2" placeholder="Adicione detalhes sobre esse novo valor..."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle btn-icon"></i> Adicionar Fundos
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="recent-transactions">
+                            <h3>Transações Recentes</h3>
+                            <div class="transaction-list">
+                                <div class="transaction-item">
+                                    <div class="transaction-icon deposit">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </div>
+                                    <div class="transaction-details">
+                                        <div class="transaction-main">
+                                            <span class="transaction-title">Economias Pessoais</span>
+                                            <span class="transaction-amount">+ R$ 5.000,00</span>
+                                        </div>
+                                        <div class="transaction-meta">
+                                            <span class="transaction-date">15/03/2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="transaction-item">
+                                    <div class="transaction-icon deposit">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </div>
+                                    <div class="transaction-details">
+                                        <div class="transaction-main">
+                                            <span class="transaction-title">Ajuda dos Pais</span>
+                                            <span class="transaction-amount">+ R$ 10.000,00</span>
+                                        </div>
+                                        <div class="transaction-meta">
+                                            <span class="transaction-date">10/02/2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="transaction-item">
+                                    <div class="transaction-icon expense">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </div>
+                                    <div class="transaction-details">
+                                        <div class="transaction-main">
+                                            <span class="transaction-title">Reserva do Local</span>
+                                            <span class="transaction-amount">- R$ 4.500,00</span>
+                                        </div>
+                                        <div class="transaction-meta">
+                                            <span class="transaction-date">05/02/2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>

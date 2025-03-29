@@ -1,0 +1,248 @@
+<!-- Página de Relatórios -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Planejamento de Casamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="casamento.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-ring logo-icon"></i>
+                    Casa<span>Mente</span>
+                </a>
+                <div class="nav-links">
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="expenses.html">Despesas</a>
+                    <a href="shopping-list.html">Lista de Compras</a>
+                    <a href="gallery.html">Galeria</a>
+                    <a href="reports.html" class="active">Relatórios</a>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">AS</div>
+                    <span>Ana Silva</span>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        <div class="mobile-menu">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="expenses.html">Despesas</a>
+            <a href="shopping-list.html">Lista de Compras</a>
+            <a href="gallery.html">Galeria</a>
+            <a href="reports.html" class="active">Relatórios</a>
+            <a href="profile.html">Perfil</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Relatórios</h1>
+                <div class="dashboard-actions">
+                    <div class="form-group" style="min-width: 200px; margin-bottom: 0;">
+                        <select id="reportType" class="report-select">
+                            <option value="monthly">Mensal</option>
+                            <option value="category">Por Categoria</option>
+                            <option value="progress">Progresso</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" id="exportReport">
+                        <i class="fas fa-download btn-icon"></i> Exportar PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="report-filters">
+                    <h3>Filtros</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateStart">Data Inicial</label>
+                            <input type="date" id="dateStart" name="dateStart">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateEnd">Data Final</label>
+                            <input type="date" id="dateEnd" name="dateEnd">
+                        </div>
+                        <div class="form-group">
+                            <label for="filterCategory">Categoria</label>
+                            <select id="filterCategory" name="filterCategory">
+                                <option value="">Todas as Categorias</option>
+                                <option value="decoration">Decoração</option>
+                                <option value="food">Buffet</option>
+                                <option value="clothing">Vestuário</option>
+                                <option value="venue">Local</option>
+                                <option value="photography">Fotografia</option>
+                                <option value="music">Música</option>
+                                <option value="others">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions" style="margin-top: 10px;">
+                        <button class="btn btn-primary" id="applyFilters">
+                            <i class="fas fa-filter btn-icon"></i> Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatório Mensal -->
+            <div class="report-section" id="monthlyReport">
+                <div class="card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">
+                            <i class="fas fa-chart-line"></i> Gastos Mensais
+                        </h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="monthlyChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="expense-header">
+                        <h2 class="expense-title">
+                            <i class="fas fa-table"></i> Resumo Mensal
+                        </h2>
+                    </div>
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Mês</th>
+                                    <th>Total Gasto</th>
+                                    <th>% do Orçamento</th>
+                                    <th>Maior Despesa</th>
+                                    <th>Itens Comprados</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthlyTableBody">
+                                <!-- Dados serão inseridos pelo JavaScript -->
+                                <tr>
+                                    <td>Janeiro/2025</td>
+                                    <td>R$ 4.500,00</td>
+                                    <td>15%</td>
+                                    <td>Reserva do Local</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>Fevereiro/2025</td>
+                                    <td>R$ 2.800,00</td>
+                                    <td>9.3%</td>
+                                    <td>Fotógrafo</td>
+                                    <td>2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatório por Categoria -->
+            <div class="report-section" id="categoryReport" style="display: none;">
+                <div class="card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">
+                            <i class="fas fa-chart-pie"></i> Gastos por Categoria
+                        </h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="expense-header">
+                        <h2 class="expense-title">
+                            <i class="fas fa-tags"></i> Detalhamento por Categoria
+                        </h2>
+                    </div>
+                    <div class="expense-table-container">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Categoria</th>
+                                    <th>Total Gasto</th>
+                                    <th>% do Orçamento</th>
+                                    <th>Itens</th>
+                                    <th>Média por Item</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody">
+                                <!-- Dados serão inseridos pelo JavaScript -->
+                                <tr>
+                                    <td>Decoração</td>
+                                    <td>R$ 3.200,00</td>
+                                    <td>10.7%</td>
+                                    <td>5</td>
+                                    <td>R$ 640,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Local</td>
+                                    <td>R$ 12.000,00</td>
+                                    <td>40%</td>
+                                    <td>1</td>
+                                    <td>R$ 12.000,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatório de Progresso -->
+            <div class="report-section" id="progressReport" style="display: none;">
+                <div class="card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">
+                            <i class="fas fa-tasks"></i> Progresso do Planejamento
+                        </h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="progressChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <div class="summary-cards">
+                    <div class="card summary-card">
+                        <h3><i class="fas fa-clipboard-check"></i> Tarefas Concluídas</h3>
+                        <div class="amount">65%</div>
+                        <div class="subtitle">21 de 32 itens comprados</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-good" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="card summary-card">
+                        <h3><i class="fas fa-calendar-alt"></i> Tempo Restante</h3>
+                        <div class="amount">76 dias</div>
+                        <div class="subtitle">Para o grande dia</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-warning" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="card summary-card">
+                        <h3><i class="fas fa-coins"></i> Orçamento Utilizado</h3>
+                        <div class="amount">58%</div>
+                        <div class="subtitle">R$ 17.400 de R$ 30.000</div>
+                        <div class="progress-bar">
+                            <div class="progress-value progress-warning" style="width: 58%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
